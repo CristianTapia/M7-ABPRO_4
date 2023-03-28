@@ -1,0 +1,29 @@
+{
+  "name": "m7-abpro_4",
+  "version": "1.0.0",
+  "description": "M7-ABPRO_4",
+  "main": "queries.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristianTapia/M7-ABPRO_4.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CristianTapia/M7-ABPRO_4/issues"
+  },
+  "homepage": "https://github.com/CristianTapia/M7-ABPRO_4#readme",
+  "dependencies": {
+    "pg": "^8.10.0",
+    "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
