@@ -9,10 +9,10 @@ import dotenv from "dotenv";
 //dotenv.config();
 
 yargs.option({
-  n: { demandOption: false, alias: "descripcion" },
-  r: { demandOption: false, alias: "fecha" },
-  c: { demandOption: false, alias: "monto" },
-  l: { demandOption: false, alias: "cuenta" },
+  d: { demandOption: false, alias: "descripcion" },
+  f: { demandOption: false, alias: "fecha" },
+  m: { demandOption: false, alias: "monto" },
+  c: { demandOption: false, alias: "cuenta" },
 });
 
 const params = yargs.argv;
