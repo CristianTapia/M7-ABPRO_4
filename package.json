@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/CristianTapia/M7-ABPRO_4#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "pg": "^8.10.0",
     "yargs": "^17.7.1"
   },
