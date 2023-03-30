@@ -1,11 +1,9 @@
 import pool from "./lib/db_connection.js";
-import pg from "pg";
-const { Pool } = pg;
-import { argv } from "node:process";
+import Cursor from "pg-cursor";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 const yargs = _yargs(hideBin(process.argv));
-import dotenv from "dotenv";
+
 //dotenv.config();
 
 yargs.option({
@@ -15,18 +13,22 @@ yargs.option({
   c: { demandOption: false, alias: "cuenta" },
 });
 
-const params = yargs.argv;
-
-pool.connect();
-
-async function queries() {
-  // await pool.query('BEGIN');
+async function queryCuentas() {
   try {
-    let resultado = await pool.query("SELECT * FROM usuarios");
-    console.table(resultado.rows);
-  } catch (e) {
-    console.log(e);
+    const client = await pool.connect();
+    const text = "SELECT saldo FROM cuentas limit 10";
+
+    const cursor = client.query(new Cursor(text));
+
+    cursor.read(100, (err, rows) => {
+      console.log(rows);
+      cursor.close(() => {
+        client.release();
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
 }
 
-queries();
+queryCuentas();
