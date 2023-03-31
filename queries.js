@@ -6,8 +6,6 @@ import { argv } from "node:process";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 const yargs = _yargs(hideBin(process.argv));
-import dotenv from "dotenv";
-//dotenv.config();
 
 yargs.option({
   d: { demandOption: false, alias: "descripcion" },
@@ -18,18 +16,23 @@ yargs.option({
 
 const params = yargs.argv;
 
-pool.connect();
+// pool.connect();
+const client = await pool.connect();
 
-async function queries() {
-  // await pool.query('BEGIN');
+async function queries(query, mensaje, ...params) {
+  // await pool.query("BEGIN");
   try {
-    let resultado = await pool.query("SELECT * FROM usuarios");
+    const resultado = await client.query(query, params);
+    console.log(mensaje);
     console.table(resultado.rows);
-  } catch (e) {
-    console.log(e);
+    // await client.query('COMMIT');
+  } catch (err) {
+    // await client.query('ROLLBACK');
+    console.log("Error", err);
+  } finally {
+    client.release();
   }
 }
-
 
 async function query() {
   try {
@@ -38,8 +41,20 @@ async function query() {
   } catch (err) {
     console.log(err)
   }
-
 }
 
+if (argv[2] == "insertar") {
+  queries(
+    "INSERT INTO transacciones (descripcion, fecha, monto, id_cuenta) VALUES ($1, $2, $3, $4) RETURNING *",
+    "Transaccion agregada",
+    params.d,
+    params.f,
+    params.m,
+    params.c
+  );
+}
 
-query()
+if (argv[2] == "ver") {
+  queries("SELECT * FROM transacciones");
+  query();
+}
