@@ -33,6 +33,25 @@ async function queries(query, mensaje, ...params) {
   }
 }
 
+async function queryCuenta(){
+  try{
+  const client= await pool.connect();
+  const text= "SELECT * FROM transacciones WHERE id_cuenta=$1 limit 10";
+  const values= [3]
+
+  const cursor= client.query(new Cursor(text,values))
+  cursor.read(10, (err, rows) => {
+    console.log(rows);
+    cursor.close(() => {
+      client.release();
+    });
+  });
+}catch (err) {
+  console.log(err);
+}
+}
+queryCuenta()
+
 async function queryCuentas() {
   try {
     const client = await pool.connect();
