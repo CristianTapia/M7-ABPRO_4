@@ -15,14 +15,13 @@ yargs.option({
   z: { demandOption: false, alias: "descripcion" },
 });
 
+const params = yargs.argv;
 const client = await pool.connect();
-// console.log(params.d)
+
 async function queries(query, mensaje, ...params) {
   // await pool.query("BEGIN");
-
   try {
     const resultado = await client.query(query, params);
-    console.log(params)
     console.log(mensaje);
     console.table(resultado.rows);
     // await client.query('COMMIT');
@@ -53,10 +52,13 @@ async function queryCuentas() {
 
 async function query() {
   try {
-    const cursor = await pool.query('SELECT * FROM transacciones WHERE id_cuenta=$1 limit 10', [1]);
-    console.table(cursor.rows)
+    const cursor = await pool.query(
+      "SELECT * FROM transacciones WHERE id_cuenta=$1 limit 10",
+      [1]
+    );
+    console.table(cursor.rows);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
@@ -78,6 +80,3 @@ if (argv[2] == "ver") {
 if (argv[2] == "cuentas") {
   queryCuentas();
 }
-
-
-
