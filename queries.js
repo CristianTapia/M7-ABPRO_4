@@ -15,13 +15,13 @@ yargs.option({
   i: { demandOption: false, alias: "id_cuenta" },
 });
 
-const params = yargs.argv;
+const values = yargs.argv;
 const client = await pool.connect();
 
-async function queryInsertar(query, mensaje, ...params) {
+async function queryInsertar(query, mensaje, ...values) {
   // await pool.query("BEGIN");
   try {
-    const resultado = await client.query(query, params);
+    const resultado = await client.query(query, values);
     console.log(mensaje);
     console.table(resultado.rows);
     // await client.query('COMMIT');
@@ -68,26 +68,14 @@ async function queryCuentas() {
   }
 }
 
-async function query() {
-  try {
-    const cursor = await pool.query(
-      "SELECT * FROM transacciones WHERE id_cuenta=$1 limit 10",
-      [1]
-    );
-    console.table(cursor.rows);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 if (argv[2] == "insertar") {
   queryInsertar(
     "INSERT INTO transacciones (descripcion, fecha, monto, id_cuenta) VALUES ($1, $2, $3, $4) RETURNING *",
     "Transaccion agregada correctamente",
-    params.z,
-    params.f,
-    params.m,
-    params.c
+    values.z,
+    values.f,
+    values.m,
+    values.c
   );
 }
 
