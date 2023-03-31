@@ -1,6 +1,5 @@
 import pool from "./lib/db_connection.js";
 import pg from "pg";
-import cursor from "pg-cursor";
 import Cursor from "pg-cursor";
 const { Pool } = pg;
 import { argv } from "node:process";
@@ -13,6 +12,7 @@ yargs.option({
   m: { demandOption: false, alias: "monto" },
   c: { demandOption: false, alias: "cuenta" },
   z: { demandOption: false, alias: "descripcion" },
+  i: { demandOption: false, alias: "id_cuenta" },
 });
 
 const params = yargs.argv;
@@ -41,7 +41,7 @@ async function queryCuenta(){
 
   const cursor= client.query(new Cursor(text,values))
   cursor.read(10, (err, rows) => {
-    console.log(rows);
+    console.table(rows);
     cursor.close(() => {
       client.release();
     });
@@ -50,7 +50,6 @@ async function queryCuenta(){
   console.log(err);
 }
 }
-queryCuenta()
 
 async function queryCuentas() {
   try {
@@ -59,7 +58,7 @@ async function queryCuentas() {
     const cursor = client.query(new Cursor(text));
 
     cursor.read(100, (err, rows) => {
-      console.log(rows);
+      console.table(rows);
       cursor.close(() => {
         client.release();
       });
@@ -93,7 +92,7 @@ if (argv[2] == "insertar") {
 }
 
 if (argv[2] == "ver") {
-  query();
+  queryCuenta();
 }
 
 if (argv[2] == "cuentas") {
