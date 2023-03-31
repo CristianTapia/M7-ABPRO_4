@@ -18,7 +18,7 @@ yargs.option({
 const params = yargs.argv;
 const client = await pool.connect();
 
-async function queries(query, mensaje, ...params) {
+async function queryInsertar(query, mensaje, ...params) {
   // await pool.query("BEGIN");
   try {
     const resultado = await client.query(query, params);
@@ -81,7 +81,7 @@ async function query() {
 }
 
 if (argv[2] == "insertar") {
-  queries(
+  queryInsertar(
     "INSERT INTO transacciones (descripcion, fecha, monto, id_cuenta) VALUES ($1, $2, $3, $4) RETURNING *",
     "Transaccion agregada correctamente",
     params.z,
