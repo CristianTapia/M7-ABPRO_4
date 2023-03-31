@@ -57,6 +57,5 @@ if (argv[2] == "insertar") {
 }
 
 if (argv[2] == "ver") {
-  queries("SELECT * FROM transacciones");
   query();
 }
